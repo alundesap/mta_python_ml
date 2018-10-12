@@ -15,7 +15,8 @@
 					"tempVal",
 					"ts",
 					"created"
-                ]
+                ],
+		"include_filter": []
             }
         }
 	]
