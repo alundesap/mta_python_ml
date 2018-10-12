@@ -1,5 +1,5 @@
-ID: DAT368.cf_deploy
-extends: DAT368
+ID: python-ml.cf_deploy
+extends: python-ml
 _schema-version: '3.1'
 
 modules:
