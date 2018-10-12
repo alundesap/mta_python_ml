@@ -1,0 +1,34 @@
+ID: DAT368
+_schema-version: '2.0'
+version: 0.0.1
+modules:
+  - name: web
+    type: javascript.nodejs
+    path: web
+    requires:
+      - name: dat368-uaa
+      - name: python_api
+        group: destinations
+        properties:
+          name: python_be
+          url: '~{url}'
+          forwardAuthToken: true
+  - name: python
+    type: python
+    path: python
+    requires:
+      - name: dat368-uaa
+      - name: dat368-hdi
+    provides:
+      - name: python_api
+        properties:
+          url: '${default-url}'
+resources:
+  - name: dat368-hdi
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: '${service-name}'
+  - name: dat368-uaa
+    type: com.sap.xs.uaa
+    parameters:
+      path: ./xs-security.json
