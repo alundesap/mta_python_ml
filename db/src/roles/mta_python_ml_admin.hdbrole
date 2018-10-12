@@ -1,6 +1,6 @@
 {
 	"role":{
-		"name": "mta_schemaless.db.roles::mta_schemaless_admin",
+		"name": "mta_python_ml.db.roles::mta_python_ml_admin",
 		"schema_privileges": [{
 		   "privileges": ["SELECT METADATA",
 		    			  "SELECT CDS METADATA",

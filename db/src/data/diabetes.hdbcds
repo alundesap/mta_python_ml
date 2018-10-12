@@ -1,4 +1,4 @@
-namespace mta_schemaless.db.data;
+namespace mta_python_ml.db.data;
 
 context diabetes {
 	type KeyType : Integer;

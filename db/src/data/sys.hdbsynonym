@@ -1,5 +1,5 @@
 {
-  "mta_schemaless.db.data::_DUMMY": {
+  "mta_python_ml.db.data::_DUMMY": {
     "target": {
       "object": "DUMMY",
       "schema": "SYS"

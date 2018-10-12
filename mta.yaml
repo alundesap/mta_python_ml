@@ -7,7 +7,7 @@ modules:
    type: html5
    path: web
    requires:
-    - name: dat368-uaa
+    - name: python-ml-uaa
 ### Python Requires Block Begin vvv
     - name: python_api
       group: destinations
@@ -22,8 +22,8 @@ modules:
    type: python
    path: python
    requires:
-    - name: dat368-uaa
-    - name: dat368-hdi
+    - name: python-ml-uaa
+    - name: python-ml-hdi
    provides:
     - name: python_api
       properties:
@@ -31,11 +31,11 @@ modules:
 ### Python Module Block End ^^^
 
 resources:
- - name: dat368-hdi
+ - name: python-ml-hdi
    type: com.sap.xs.hdi-container
    properties:
       hdi-container-name: ${service-name}
- - name: dat368-uaa
+ - name: python-ml-uaa
    type: com.sap.xs.uaa
    parameters:
       path: ./xs-security.json
