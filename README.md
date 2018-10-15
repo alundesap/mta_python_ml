@@ -10,15 +10,28 @@ Currently using these steps.
 ```
 xs create-service hana hdi-shared python-ml-hdi
 xs create-service xsuaa default python-ml-uaa
+```
 
+```
+git pull
 xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
 xs bind-service python-ml.db python-ml-hdi
 xs restart python-ml.db --wait-indefinitely ; sleep 10 ; xs stop python-ml.db
+```
 
+```
+git pull
 xs push python-ml.python -k 1024M -m 256M -n python -p python --no-start
 xs bind-service python-ml.python python-ml-hdi
 xs bind-service python-ml.python python-ml-uaa
 xs start python-ml.python
+```
 
+```
+git pull
+xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs --no-start
+xs bind-service python-ml.xsjs python-ml-hdi
+xs bind-service python-ml.xsjs python-ml-uaa
+xs start python-ml.xsjs
 ```
 

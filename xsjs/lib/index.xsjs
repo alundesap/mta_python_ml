@@ -31,7 +31,7 @@ body += "<!-- <a href=\"sensors.xsodata/tempNoTS/?$format=json\">Temps View no T
 body += "<a href=\"test_post.xsjs\" target=\"post\">Post Temp</a><br />\n";
 body += "<br />\n";
 body += "<a href=\"diabetes.xsodata/$metadata\">Metadata</a><br />\n";
-body += "<a href=\"diabetes.xsodata/temp/?$top=5&$format=json\">Top 5 Subjects</a><br />\n";
+body += "<a href=\"diabetes.xsodata/subject/?$top=5&$format=json\">Top 5 Subjects</a><br />\n";
 body += "<br />\n";
 body += "</body>\n";
 body += "</html>\n";
