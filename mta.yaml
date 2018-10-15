@@ -30,6 +30,15 @@ modules:
          url: ${default-url}
 ### Python Module Block End ^^^
 
+
+ - name: xsjs
+   type: nodejs
+   path: xsjs
+   provides:
+    - name: xsjs_api
+      properties:
+         url: ${default-url}
+
 resources:
  - name: python-ml-hdi
    type: com.sap.xs.hdi-container
