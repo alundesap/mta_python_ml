@@ -24,6 +24,6 @@ context digits {
 	entity number {
 		key numberId: Integer generated always as identity ( start with 1 increment by 1 );
 		image: imageBlock not null;
-		target: Integer not null;
+		target: hana.TINYINT not null;
 	}
 };
