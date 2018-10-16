@@ -3,6 +3,8 @@
 
 Video: [Introducing the Python Client API for SAP HANA](https://video.sap.com/media/t/1_0bw54r9a/)
 
+Better Handwriting Recognition Example:
+Git: [DeepLearningPython35](https://github.com/MichalDanielDobrzanski/DeepLearningPython35)
 
 
 ```
