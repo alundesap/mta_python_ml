@@ -25,6 +25,9 @@ xs push python-ml.python -k 1024M -m 256M -n python -p python --no-start
 xs bind-service python-ml.python python-ml-hdi
 xs bind-service python-ml.python python-ml-uaa
 xs start python-ml.python
+
+git pull
+xs push python-ml.python -k 1024M -m 256M -n python -p python
 ```
 
 ```
@@ -33,5 +36,8 @@ xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs --no-start
 xs bind-service python-ml.xsjs python-ml-hdi
 xs bind-service python-ml.xsjs python-ml-uaa
 xs start python-ml.xsjs
+
+git pull
+xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs
 ```
 

@@ -1,0 +1,4 @@
+namespace mta_python_ml.db.data;
+
+context hwnum {
+};

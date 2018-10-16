@@ -8,6 +8,12 @@ modules:
    path: web
    requires:
     - name: python-ml-uaa
+    - name: xsjs_api
+      group: destinations
+      properties:
+        name: xsjs_be
+        url: ~{url}
+        forwardAuthToken: true
 ### Python Requires Block Begin vvv
     - name: python_api
       group: destinations
@@ -34,10 +40,20 @@ modules:
  - name: xsjs
    type: nodejs
    path: xsjs
+   requires:
+    - name: python-ml-uaa
+    - name: python-ml-hdi
    provides:
     - name: xsjs_api
       properties:
          url: ${default-url}
+
+
+ - name: db1
+   type: hdb
+   path: db1
+   requires:
+    - name: hdi_db1
 
 resources:
  - name: python-ml-hdi
@@ -48,3 +64,9 @@ resources:
    type: com.sap.xs.uaa
    parameters:
       path: ./xs-security.json
+
+ - name: hdi_db1
+   properties:
+      hdi-container-name_2: ${service-name}
+   type: com.sap.xs.hdi-container
+
