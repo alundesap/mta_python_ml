@@ -16,7 +16,7 @@ xs create-service xsuaa default python-ml-uaa
 git pull
 xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
 xs bind-service python-ml.db python-ml-hdi
-xs restart python-ml.db --wait-indefinitely ; sleep 10 ; xs stop python-ml.db
+xs restart python-ml.db --wait-indefinitely ; sleep 20 ; xs stop python-ml.db
 ```
 
 ```
