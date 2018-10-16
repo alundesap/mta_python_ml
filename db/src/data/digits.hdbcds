@@ -12,7 +12,6 @@ context digits {
 		c8: hana.TINYINT;
     };
 	type imageBlock {
-		r0: imageLine;
 		r1: imageLine;
 		r2: imageLine;
 		r3: imageLine;
