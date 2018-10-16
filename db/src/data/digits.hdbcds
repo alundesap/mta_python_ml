@@ -1,0 +1,29 @@
+namespace mta_python_ml.db.data;
+
+context digits {
+	type imageLine {
+		p0: hana.TINYINT;
+		p1: hana.TINYINT;
+		p2: hana.TINYINT;
+		p3: hana.TINYINT;
+		p4: hana.TINYINT;
+		p5: hana.TINYINT;
+		p6: hana.TINYINT;
+		p7: hana.TINYINT;
+    };
+	type imageBlock {
+		l0: imageLine;
+		l1: imageLine;
+		l2: imageLine;
+		l3: imageLine;
+		l4: imageLine;
+		l5: imageLine;
+		l6: imageLine;
+		l7: imageLine;
+    };
+	entity number {
+		key numberId: Integer generated always as identity ( start with 1 increment by 1 );
+		image: imageBlock not null;
+		target: Integer not null;
+	}
+};
