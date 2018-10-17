@@ -3,6 +3,13 @@
 
 Video: [Introducing the Python Client API for SAP HANA](https://video.sap.com/media/t/1_0bw54r9a/)
 
+
+[Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/)
+
+
+[Code samples for "Neural Networks and Deep Learning"](https://github.com/mnielsen/neural-networks-and-deep-learning)
+
+
 Better Handwriting Recognition Example:
 Git: [DeepLearningPython35](https://github.com/MichalDanielDobrzanski/DeepLearningPython35)
 
