@@ -22,6 +22,10 @@ pip download -d vendor -r requirements.txt --find-links ../../sap_dependencies -
 Currently using these steps.
 
 ```
+xs t -o HANAExpress -s development
+```
+
+```
 xs create-service hana hdi-shared python-ml-hdi
 xs create-service xsuaa default python-ml-uaa
 ```
