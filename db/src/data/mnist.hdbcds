@@ -1,9 +1,69 @@
 namespace mta_python_ml.db.data;
 
 context mnist {
+	type imageLine {
+		c01: hana.TINYINT;
+		c02: hana.TINYINT;
+		c03: hana.TINYINT;
+		c04: hana.TINYINT;
+		c05: hana.TINYINT;
+		c06: hana.TINYINT;
+		c07: hana.TINYINT;
+		c08: hana.TINYINT;
+		c09: hana.TINYINT;
+		c10: hana.TINYINT;
+		c11: hana.TINYINT;
+		c12: hana.TINYINT;
+		c13: hana.TINYINT;
+		c14: hana.TINYINT;
+		c15: hana.TINYINT;
+		c16: hana.TINYINT;
+		c17: hana.TINYINT;
+		c18: hana.TINYINT;
+		c19: hana.TINYINT;
+		c20: hana.TINYINT;
+		c21: hana.TINYINT;
+		c22: hana.TINYINT;
+		c23: hana.TINYINT;
+		c24: hana.TINYINT;
+		c25: hana.TINYINT;
+		c26: hana.TINYINT;
+		c27: hana.TINYINT;
+		c28: hana.TINYINT;
+    };
+	type imageBlock {
+		r01: hana.TINYINT;
+		r02: hana.TINYINT;
+		r03: hana.TINYINT;
+		r04: hana.TINYINT;
+		r05: hana.TINYINT;
+		r06: hana.TINYINT;
+		r07: hana.TINYINT;
+		r08: hana.TINYINT;
+		r09: hana.TINYINT;
+		r10: hana.TINYINT;
+		r11: hana.TINYINT;
+		r12: hana.TINYINT;
+		r13: hana.TINYINT;
+		r14: hana.TINYINT;
+		r15: hana.TINYINT;
+		r16: hana.TINYINT;
+		r17: hana.TINYINT;
+		r18: hana.TINYINT;
+		r19: hana.TINYINT;
+		r20: hana.TINYINT;
+		r21: hana.TINYINT;
+		r22: hana.TINYINT;
+		r23: hana.TINYINT;
+		r24: hana.TINYINT;
+		r25: hana.TINYINT;
+		r26: hana.TINYINT;
+		r27: hana.TINYINT;
+		r28: hana.TINYINT;
+    };
 	entity number {
-		key numberId: Integer generated always as identity ( start with 1 increment by 1 );
-		target: hana.TINYINT not null;
-		image: Binary(1568) not null;	// 784 x 2 = 28 x 28 x 2 bytes/int
+		key ID: Integer generated always as identity ( start with 1 increment by 1 );
+		image: imageBlock not null;	// 784 = 28 x 28
+		label: hana.TINYINT not null;
 	}
 };
