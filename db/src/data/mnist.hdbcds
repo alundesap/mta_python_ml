@@ -1,0 +1,9 @@
+namespace mta_python_ml.db.data;
+
+context mnist {
+	entity number {
+		key numberId: Integer generated always as identity ( start with 1 increment by 1 );
+		target: hana.TINYINT not null;
+		image: Binary(1568) not null;	// 784 x 2 = 28 x 28 x 2 bytes/int
+	}
+};
