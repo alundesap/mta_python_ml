@@ -46,6 +46,7 @@ context mnist {
 		r12: imageLine;
 		r13: imageLine;
 		r14: imageLine;
+		r15: imageLine;
 		r16: imageLine;
 		r17: imageLine;
 		r18: imageLine;
@@ -62,7 +63,7 @@ context mnist {
     };
 	entity number {
 		key ID: Integer generated always as identity ( start with 1 increment by 1 );
-		image: imageBlock not null;	// 784 = 28 x 28
 		label: hana.TINYINT not null;
+		image: imageBlock not null;	// 784 = 28 x 28
 	}
 };
