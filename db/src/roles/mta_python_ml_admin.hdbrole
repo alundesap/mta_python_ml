@@ -1,9 +1,6 @@
 {
 	"role":{
 		"name": "mta_python_ml.db.roles::mta_python_ml_admin",
-		"global_roles":[
-			"AFL__SYS_AFL_AFLPAL_EXECUTE"
-		],
 		"schema_privileges": [{
 		   "privileges": ["SELECT METADATA",
 		    			  "SELECT CDS METADATA",

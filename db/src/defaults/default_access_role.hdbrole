@@ -1,6 +1,9 @@
 {
 	"role":{
 		"name": "default_access_role",
+		"global_roles":[
+			"AFL__SYS_AFL_AFLPAL_EXECUTE"
+		],
 		"schema_roles": [{
 		 "names": ["mta_python_ml.db.roles::mta_python_ml_admin"]
 		}]
