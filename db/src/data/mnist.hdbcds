@@ -61,9 +61,19 @@ context mnist {
 		r27: imageLine;
 		r28: imageLine;
     };
-	entity number {
+	entity train {
 		key ID: Integer generated always as identity ( start with 1 increment by 1 );
 		LABEL: Integer not null;
 		IMAGE: imageBlock not null;	// 784 = 28 x 28
-	}
+	};
+	entity test {
+		key ID: Integer generated always as identity ( start with 1 increment by 1 );
+		LABEL: Integer not null;
+		IMAGE: imageBlock not null;	// 784 = 28 x 28
+	};
+	define view testv as SELECT from test {
+		ID as "ID",
+		IMAGE as "IMAGE"
+	};
+	
 };

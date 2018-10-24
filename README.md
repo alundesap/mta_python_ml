@@ -35,6 +35,12 @@ git pull
 xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
 xs bind-service python-ml.db python-ml-hdi
 xs restart python-ml.db --wait-indefinitely ; sleep 15 ; xs stop python-ml.db
+--or--
+cd db ; npm install ; cd ..
+
+git pull
+xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
+xs restart python-ml.db --wait-indefinitely ; sleep 15 ; xs stop python-ml.db
 ```
 
 ```
