@@ -71,9 +71,9 @@ context mnist {
 		LABEL: Integer not null;
 		IMAGE: imageBlock not null;	// 784 = 28 x 28
 	};
-	define view testv as SELECT from test {
-		ID as "ID",
-		IMAGE as "IMAGE"
+	entity testnl {
+		key ID: Integer generated always as identity ( start with 1 increment by 1 );
+		IMAGE: imageBlock not null;	// 784 = 28 x 28
 	};
-	
+
 };
