@@ -83,5 +83,12 @@ context mnist {
 		ATTRIBUTE4: String(10) not null;
 		LABEL: Integer not null;
 	};
+	entity expred {
+		key ID: Integer generated always as identity ( start with 1 increment by 1 );
+		ATTRIBUTE1: Double not null;
+		ATTRIBUTE2: Double not null;
+		ATTRIBUTE3: Double not null;
+		ATTRIBUTE4: String(10) not null;
+	};
 
 };
