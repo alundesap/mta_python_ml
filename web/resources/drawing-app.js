@@ -27,14 +27,6 @@ var drawingApp = (function () {
 		colorGreen = "#659b41",
 		colorYellow = "#ffcf33",
 		colorBrown = "#986928",
-		outlineImage = new Image(),
-		crayonImage = new Image(),
-		markerImage = new Image(),
-		eraserImage = new Image(),
-		crayonBackgroundImage = new Image(),
-		markerBackgroundImage = new Image(),
-		eraserBackgroundImage = new Image(),
-		crayonTextureImage = new Image(),
 		clickX = [],
 		clickY = [],
 		clickColor = [],
@@ -43,7 +35,7 @@ var drawingApp = (function () {
 		clickDrag = [],
 		paint = false,
 		curColor = colorPurple,
-		curTool = "crayon",
+		curTool = "marker",
 		curSize = "normal",
 		mediumStartX = 18,
 		mediumStartY = 19,
@@ -81,29 +73,6 @@ var drawingApp = (function () {
 				i,
 				selected,
 
-				drawCrayon = function (x, y, color, selected) {
-
-					context.beginPath();
-					context.moveTo(x + 41, y + 11);
-					context.lineTo(x + 41, y + 35);
-					context.lineTo(x + 29, y + 35);
-					context.lineTo(x + 29, y + 33);
-					context.lineTo(x + 11, y + 27);
-					context.lineTo(x + 11, y + 19);
-					context.lineTo(x + 29, y + 13);
-					context.lineTo(x + 29, y + 11);
-					context.lineTo(x + 41, y + 11);
-					context.closePath();
-					context.fillStyle = color;
-					context.fill();
-
-					if (selected) {
-						context.drawImage(crayonImage, x, y, mediumImageWidth, mediumImageHeight);
-					} else {
-						context.drawImage(crayonImage, 0, 0, 59, mediumImageHeight, x, y, 59, mediumImageHeight);
-					}
-				},
-
 				drawMarker = function (x, y, color, selected) {
 
 					context.beginPath();
@@ -115,11 +84,6 @@ var drawingApp = (function () {
 					context.fillStyle = color;
 					context.fill();
 
-					if (selected) {
-						context.drawImage(markerImage, x, y, mediumImageWidth, mediumImageHeight);
-					} else {
-						context.drawImage(markerImage, 0, 0, 59, mediumImageHeight, x, y, 59, mediumImageHeight);
-					}
 				};
 
 			// Make sure required resources are loaded before redrawing
@@ -129,36 +93,7 @@ var drawingApp = (function () {
 
 			clearCanvas();
 
-			if (curTool === "crayon") {
-
-				// Draw the crayon tool background
-				context.drawImage(crayonBackgroundImage, 0, 0, canvasWidth, canvasHeight);
-
-				// Draw purple crayon
-				selected = (curColor === colorPurple);
-				locX = selected ? 18 : 52;
-				locY = 19;
-				drawCrayon(locX, locY, colorPurple, selected);
-
-				// Draw green crayon
-				selected = (curColor === colorGreen);
-				locX = selected ? 18 : 52;
-				locY += 46;
-				drawCrayon(locX, locY, colorGreen, selected);
-
-				// Draw yellow crayon
-				selected = (curColor === colorYellow);
-				locX = selected ? 18 : 52;
-				locY += 46;
-				drawCrayon(locX, locY, colorYellow, selected);
-
-				// Draw brown crayon
-				selected = (curColor === colorBrown);
-				locX = selected ? 18 : 52;
-				locY += 46;
-				drawCrayon(locX, locY, colorBrown, selected);
-
-			} else if (curTool === "marker") {
+			if (curTool === "marker") {
 
 				// Draw the marker tool background
 				context.drawImage(markerBackgroundImage, 0, 0, canvasWidth, canvasHeight);
@@ -189,8 +124,6 @@ var drawingApp = (function () {
 
 			} else if (curTool === "eraser") {
 
-				context.drawImage(eraserBackgroundImage, 0, 0, canvasWidth, canvasHeight);
-				context.drawImage(eraserImage, 18, 19, mediumImageWidth, mediumImageHeight);
 			}
 
 			// Draw line on ruler to indicate size
@@ -412,29 +345,6 @@ mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetT
 			//     context = document.getElementById('canvas').getContext("2d");
 
 			// Load images
-			crayonImage.onload = resourceLoaded;
-			crayonImage.src = "images/crayon-outline.png";
-
-			markerImage.onload = resourceLoaded;
-			markerImage.src = "images/marker-outline.png";
-
-			eraserImage.onload = resourceLoaded;
-			eraserImage.src = "images/eraser-outline.png";
-
-			crayonBackgroundImage.onload = resourceLoaded;
-			crayonBackgroundImage.src = "images/crayon-background.png";
-
-			markerBackgroundImage.onload = resourceLoaded;
-			markerBackgroundImage.src = "images/marker-background.png";
-
-			eraserBackgroundImage.onload = resourceLoaded;
-			eraserBackgroundImage.src = "images/eraser-background.png";
-
-			crayonTextureImage.onload = resourceLoaded;
-			crayonTextureImage.src = "images/crayon-texture.png";
-
-			outlineImage.onload = resourceLoaded;
-			outlineImage.src = "images/watermelon-duck-outline.png";
 		};
 
 	return {
