@@ -5,19 +5,34 @@
 <meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
 <title>web</title>
 <style>
-#canvasSimpleDiv, #canvasSimpleColorsDiv, #canvasSimpleSizesDiv, #canvasSimpleToolsDiv, #canvasSimpleOutlineDiv {
+#canvasSimpleDiv {
 	/*border:dashed 1px #557755;*/
 	cursor:wait;
 	width:100px;
 	height:100px;	
 }
 
-#canvasSimple, #canvasSimpleColors, #canvasSimpleSizes, #canvasSimpleTools, #canvasSimpleOutline {
+#canvasScaledDiv {
+	/*border:dashed 1px #557755;*/
+	cursor:wait;
+	width:28px;
+	height:28px;	
+}
+
+#canvasSimple {
 	border:solid 1px #333;
 	cursor:pointer;
 	width:100px;
 	height:100px;
 }
+
+#canvasScaled {
+	border:solid 1px #333;
+	cursor:pointer;
+	width:28px;
+	height:28px;
+}
+
 
 .clearCanvasLink {
 	text-decoration:underline;
@@ -77,6 +92,8 @@ var canvas;
 var context;
 var canvasWidth = 100;
 var canvasHeight = 100;
+var scaledWidth = 28;
+var scaledHeight = 28;
 var padding = 25;
 var lineWidth = 8;
 var colorPurple = "#cb3594";
@@ -127,6 +144,8 @@ var clickDrag_simple = new Array();
 var paint_simple;
 var canvas_simple;
 var context_simple;
+var canvas_scaled;
+var context_scaled;
 /**
 * Creates a canvas element.
 */
@@ -212,6 +231,22 @@ function prepareSimpleCanvas()
 	}, false);
 }
 
+function prepareScaledCanvas()
+{
+	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
+	var canvasDiv = document.getElementById('canvasScaledDiv');
+	canvas_scaled = document.createElement('canvas');
+	canvas_scaled.setAttribute('width', scaledWidth);
+	canvas_scaled.setAttribute('height', scaledHeight);
+	canvas_scaled.setAttribute('id', 'canvasScaled');
+	canvasDiv.appendChild(canvas_scaled);
+	if(typeof G_vmlCanvasManager != 'undefined') {
+		canvas_scaled = G_vmlCanvasManager.initElement(canvas_scaled);
+	}
+	context_scaled = canvas_scaled.getContext("2d");
+	
+}
+
 function addClickSimple(x, y, dragging)
 {
 	clickX_simple.push(x);
@@ -252,6 +287,9 @@ function redrawSimple()
     <p class="demoToolList">Clear the canvas: <button id="clearCanvasSimple" type="button">Clear</button></p>
 	<div class="image">
 		<div id="canvasSimpleDiv"></div>
+    </div>
+	<div class="image">
+		<div id="canvasScaledDiv"></div>
     </div>
 
 </body>
