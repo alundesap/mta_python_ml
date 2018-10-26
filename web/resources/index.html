@@ -202,6 +202,10 @@ function prepareSimpleCanvas()
 		clearCanvas_scaled();
 		
 		context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
+		
+		var imgData = context_scaled.getImageData(0, 0, scaledWidth, scaledHeight);
+		// Need to stuff imgData into HANA!
+		// Probably via a POST to the Python Module.
 
 		clearCanvas_simple();
 		
