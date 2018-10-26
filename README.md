@@ -85,6 +85,7 @@ xs set-env  python-ml.web destinations '[{"forwardAuthToken":true, "name":"pytho
 xs start python-ml.web
 
 git pull
-xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs
+xs push python-ml.web -k 1024M -m 256M -p web
+xs restart python-ml.web --wait-indefinitely
 ```
 
