@@ -96,7 +96,6 @@ var drawingApp = (function () {
 			if (curTool === "marker") {
 
 				// Draw the marker tool background
-				context.drawImage(markerBackgroundImage, 0, 0, canvasWidth, canvasHeight);
 
 				// Draw purple marker
 				selected = (curColor === colorPurple);
@@ -121,8 +120,6 @@ var drawingApp = (function () {
 				locX = selected ? 18 : 52;
 				locY += 46;
 				drawMarker(locX, locY, colorBrown, selected);
-
-			} else if (curTool === "eraser") {
 
 			}
 
@@ -206,14 +203,9 @@ var drawingApp = (function () {
 			context.restore();
 
 			// Overlay a crayon texture (if the current tool is crayon)
-			if (curTool === "crayon") {
-				context.globalAlpha = 0.4; // No IE support
-				context.drawImage(crayonTextureImage, 0, 0, canvasWidth, canvasHeight);
-			}
 			context.globalAlpha = 1; // No IE support
 
 			// Draw the outline image
-			context.drawImage(outlineImage, drawingAreaX, drawingAreaY, drawingAreaWidth, drawingAreaHeight);
 		},
 
 		// Adds a point to the drawing array.

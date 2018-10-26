@@ -83,8 +83,6 @@ xs bind-service python-ml.web python-ml-uaa
 xs set-env  python-ml.web destinations '[{"forwardAuthToken":true, "name":"python_be", "url":"https://hxehost:51051"}]'
 xs start python-ml.web
 
-git pull
-xs push python-ml.web -k 1024M -m 256M -p web
-xs restart python-ml.web --wait-indefinitely
+git pull ; xs push python-ml.web -k 1024M -m 256M -p web ; xs restart python-ml.web --wait-indefinitely
 ```
 
