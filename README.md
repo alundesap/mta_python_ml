@@ -76,8 +76,7 @@ xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs
 Manually build the web module
 
 ```
-cd web
-; npm install ; cd ..
+cd web ; npm install ; cd ..
 git pull
 xs push python-ml.web -k 1024M -m 256M -n web -p web --no-start
 xs bind-service python-ml.web python-ml-uaa
