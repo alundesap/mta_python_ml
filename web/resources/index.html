@@ -97,6 +97,7 @@ var scaledWidth = 28;
 var scaledHeight = 28;
 var padding = 25;
 var lineWidth = 8;
+var colorBlack = "#000000";
 var colorPurple = "#cb3594";
 var colorGreen = "#659b41";
 var colorYellow = "#ffcf33";
@@ -206,6 +207,20 @@ function prepareSimpleCanvas()
 		var imgData = context_scaled.getImageData(0, 0, scaledWidth, scaledHeight);
 		// Need to stuff imgData into HANA!
 		// Probably via a POST to the Python Module.
+		
+		// imgData.data is 784 x 4 bytes.
+		// Need to convert the 4 bytes to an small int 0-255
+		
+		// For every pixel in an ImageData object there are four pieces of information, the RGBA values:
+
+		// R - The color red (from 0-255)
+		// G - The color green (from 0-255)
+		// B - The color blue (from 0-255)
+		// A - The alpha channel (from 0-255; 0 is transparent and 255 is fully visible)
+		
+		// The color/alpha information is held in an array, and is stored in the data property of the ImageData object.
+
+
 
 		clearCanvas_simple();
 		
@@ -279,8 +294,8 @@ function redrawSimple()
 {
 	clearCanvas_simple();
 	
-	var radius = 10;
-	context_simple.strokeStyle = "#df4b26";
+	var radius = 12;
+	context_simple.strokeStyle = colorBlack;
 	context_simple.lineJoin = "round";
 	context_simple.lineWidth = radius;
 			
