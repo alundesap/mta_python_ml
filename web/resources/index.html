@@ -257,7 +257,7 @@ function addClickSimple(x, y, dragging)
 
 function clearCanvas_simple()
 {
-	context_scaled.drawImage(canvas_simple, 0, 0);
+	context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
 	context_simple.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
@@ -290,6 +290,7 @@ function redrawSimple()
 	<div class="image">
 		<div id="canvasSimpleDiv"></div>
     </div>
+    <br />
 	<div class="image">
 		<div id="canvasScaledDiv"></div>
     </div>
