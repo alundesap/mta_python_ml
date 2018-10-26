@@ -4,6 +4,43 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
 <title>web</title>
+<script>
+(function () {
+	var onWindowLoad = function () {
+		
+		var loadScript = function (src, callback) {
+		
+			var element = document.createElement("script");
+				element.src = src;
+				element.async = true;
+				document.body.appendChild(element);
+				
+				if (callback) {
+				
+					element.onreadystatechange = function () {
+						if (this.readyState === "loaded" || this.readyState === "complete") { 
+							callback();
+						}
+					};
+					element.onload = callback;
+				}
+		},
+		
+		loadArticleScript = function () {
+			prepareSimpleCanvas();
+		};
+		loadScript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js", loadArticleScript);
+	};
+
+	if (window.addEventListener) {
+		window.addEventListener("load", onWindowLoad, false);
+	} else if (window.attachEvent) {
+		window.attachEvent("onload", onWindowLoad);
+	} else {
+		window.onload = onWindowLoad;
+	}
+}());			
+</script>
 </head>
 <body style="font-family: Tahoma, Geneva, sans-serif">
 <strong>MTA Python ML Libs</strong><br />
@@ -197,9 +234,5 @@ function redrawSimple()
 		<div id="canvasSimpleDiv"></div>
     </div>
 
-	
-<script type="text/javascript">
-	loadScript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js", prepareSimpleCanvas);
-</script>
 </body>
 </html>
