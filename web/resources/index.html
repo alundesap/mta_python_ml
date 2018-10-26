@@ -63,6 +63,7 @@
 		
 		loadArticleScript = function () {
 			prepareSimpleCanvas();
+			prepareScaledCanvas();
 		};
 		loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js", loadArticleScript);
 	};
@@ -256,6 +257,7 @@ function addClickSimple(x, y, dragging)
 
 function clearCanvas_simple()
 {
+	context_scaled.drawImage(canvas_simple, 0, 0);
 	context_simple.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
