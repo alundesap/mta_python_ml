@@ -14,5 +14,12 @@
 <p>Browse to this URL and inspect the authorities to confirm the user has the expected roles.</p>
 <p>api=$(xs api | grep endpoint | tr -s ' ' | cut -d ' ' -f 3) ; apiinfo=$(echo -n $api"/v2/info") ; echo $apiinfo ; uaa=$(curl -k -s $apiinfo | tr "," "\n" | grep authorizationEndpoint | cut -d '"' -f 4) ; cnfwho=$(echo -n $uaa"/config?action=who") ; echo $cnfwho</p>
 
+    <div id="canvasDiv"></div>
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <script type="text/javascript" src="drawing-app.js"></script>
+    <script type="text/javascript">
+    	 drawingApp.init();
+	</script>
+	
 </body>
 </html>

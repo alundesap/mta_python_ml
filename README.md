@@ -25,10 +25,14 @@ Currently using these steps.
 xs t -o HANAExpress -s ml
 ```
 
+Create service instances
+
 ```
 xs create-service hana hdi-shared python-ml-hdi
 xs create-service xsuaa default python-ml-uaa
 ```
+
+Manually build the DB module
 
 ```
 git pull
@@ -43,6 +47,8 @@ xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
 xs restart python-ml.db --wait-indefinitely ; sleep 15 ; xs stop python-ml.db
 ```
 
+Manually build the python module
+
 ```
 git pull
 xs push python-ml.python -k 1024M -m 256M -n python -p python --no-start
@@ -54,12 +60,29 @@ git pull
 xs push python-ml.python -k 1024M -m 256M -n python -p python
 ```
 
+Manually build the xsjs module
+
 ```
 git pull
 xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs --no-start
 xs bind-service python-ml.xsjs python-ml-hdi
 xs bind-service python-ml.xsjs python-ml-uaa
 xs start python-ml.xsjs
+
+git pull
+xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs
+```
+
+Manually build the web module
+
+```
+cd web
+; npm install ; cd ..
+git pull
+xs push python-ml.web -k 1024M -m 256M -n web -p web --no-start
+xs bind-service python-ml.web python-ml-uaa
+xs set-env  python-ml.web destinations '[{"forwardAuthToken":true, "name":"python_be", "url":"https://hxehost:51051"}]'
+xs start python-ml.web
 
 git pull
 xs push python-ml.xsjs -k 1024M -m 256M -n xsjs -p xsjs
