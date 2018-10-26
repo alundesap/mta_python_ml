@@ -198,7 +198,13 @@ function prepareSimpleCanvas()
 		clickX_simple = new Array();
 		clickY_simple = new Array();
 		clickDrag_simple = new Array();
-		clearCanvas_simple(); 
+
+		clearCanvas_scaled();
+		
+		context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
+
+		clearCanvas_simple();
+		
 	});
 	
 	// Add touch event listeners to canvas element
@@ -257,15 +263,19 @@ function addClickSimple(x, y, dragging)
 
 function clearCanvas_simple()
 {
-	context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
 	context_simple.clearRect(0, 0, canvasWidth, canvasHeight);
+}
+
+function clearCanvas_scaled()
+{
+	context_scaled.clearRect(0, 0, scaledWidth, scaledHeight);
 }
 
 function redrawSimple()
 {
 	clearCanvas_simple();
 	
-	var radius = 5;
+	var radius = 10;
 	context_simple.strokeStyle = "#df4b26";
 	context_simple.lineJoin = "round";
 	context_simple.lineWidth = radius;
