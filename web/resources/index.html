@@ -285,7 +285,7 @@ def trainSQLinsert(nidx):
 		request_obj = 
 		{
 		   "numberTarget": 1,
-		   "numberData": "0,randomIntFromInterval(0,255),randomIntFromInterval(0,255),0"
+		   "numberData": "'0," + randomIntFromInterval(0,255) + "," + randomIntFromInterval(0,255) + ",0'"
 		};
 		
 		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
