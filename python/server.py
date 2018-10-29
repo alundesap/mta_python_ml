@@ -166,72 +166,70 @@ def unauth_post():
     
     content = request.json
     
-	if False:	
-		svcs_json = str(os.getenv("VCAP_SERVICES", 0))
-		svcs = json.loads(svcs_json)
-		
-		schema = hana.credentials['schema']
-		host = hana.credentials['host']
-		port = hana.credentials['port']
-		user = hana.credentials['user']
-		password = hana.credentials['password']
-		
-		# The certificate will available for HANA service instances that require an encrypted connection
-		# Note: This was tested to work with python hdbcli-2.3.112 tar.gz package not hdbcli-2.3.14 provided in XS_PYTHON00_0-70003433.ZIP  
-		if 'certificate' in hana.credentials:
-		    haascert = hana.credentials['certificate']
-		
-		output += 'schema: ' + schema + '\n'
-		output += 'host: ' + host + '\n'
-		output += 'port: ' + port + '\n'
-		output += 'user: ' + user + '\n'
-		output += 'pass: ' + password + '\n'
-		
-		#    # Connect to the python HANA DB driver using the connection info
-		# User for HANA as a Service instances
-		if 'certificate' in hana.credentials:
-		    connection = dbapi.connect(
-		        address=host,
-		        port=int(port),
-		        user=user,
-		        password=password,
-		        currentSchema=schema,
-		        encrypt="true",
-		        sslValidateCertificate="true",
-		        sslCryptoProvider="openssl",
-		        sslTrustStore=haascert
-		    )
-		else:
-		    connection = dbapi.connect(host,int(port),user,password)
-		
-		#    # Prep a cursor for SQL execution
-		cursor = connection.cursor()
-		
-		#    # Form an SQL statement to retrieve some data
-		if 'certificate' in hana.credentials:
-		    cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "DAT368.db.data::sensors.temp"')
-		else:
-		    cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "' + schema + '"."DAT368.db.data::sensors.temp"')
-		
-		#    # Execute the SQL and capture the result set
-		sensor_vals = cursor.fetchall()
-		#
-		#    # Loop through the result set and output
-		for sensor_val in sensor_vals:
-		    output += 'sensor_val: ' + str(sensor_val[1]) + ' at: ' + str(sensor_val[2]) + '\n'
-		#
-		#    # Close the DB connection
-		connection.close()
-		#
-	else:
-		#output = '{"yo":"mama"}'
-		output = content
-		
+    if False:	
+        svcs_json = str(os.getenv("VCAP_SERVICES", 0))
+        svcs = json.loads(svcs_json)
+        
+        schema = hana.credentials['schema']
+        host = hana.credentials['host']
+        port = hana.credentials['port']
+        user = hana.credentials['user']
+        password = hana.credentials['password']
+        
+        # The certificate will available for HANA service instances that require an encrypted connection
+        # Note: This was tested to work with python hdbcli-2.3.112 tar.gz package not hdbcli-2.3.14 provided in XS_PYTHON00_0-70003433.ZIP  
+        if 'certificate' in hana.credentials:
+            haascert = hana.credentials['certificate']
+        
+        output += 'schema: ' + schema + '\n'
+        output += 'host: ' + host + '\n'
+        output += 'port: ' + port + '\n'
+        output += 'user: ' + user + '\n'
+        output += 'pass: ' + password + '\n'
+        
+        #    # Connect to the python HANA DB driver using the connection info
+        # User for HANA as a Service instances
+        if 'certificate' in hana.credentials:
+            connection = dbapi.connect(
+                address=host,
+                port=int(port),
+                user=user,
+                password=password,
+                currentSchema=schema,
+                encrypt="true",
+                sslValidateCertificate="true",
+                sslCryptoProvider="openssl",
+                sslTrustStore=haascert
+            )
+        else:
+            connection = dbapi.connect(host,int(port),user,password)
+        
+        #    # Prep a cursor for SQL execution
+        cursor = connection.cursor()
+        
+        #    # Form an SQL statement to retrieve some data
+        if 'certificate' in hana.credentials:
+            cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "DAT368.db.data::sensors.temp"')
+        else:
+            cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "' + schema + '"."DAT368.db.data::sensors.temp"')
+        
+        #    # Execute the SQL and capture the result set
+        sensor_vals = cursor.fetchall()
+        #
+        #    # Loop through the result set and output
+        for sensor_val in sensor_vals:
+            output += 'sensor_val: ' + str(sensor_val[1]) + ' at: ' + str(sensor_val[2]) + '\n'
+        #
+        #    # Close the DB connection
+        connection.close()
+        #
+    else:
+        #output = '{"yo":"mama"}'
+        output = content
+        
     # Return the results
     # return output
     return Response(output, mimetype='application/json')
-
-
 
 # If there is a request for a python/test2, return Testing message and then check JWT and connect to the data service and retrieve some data
 @app.route('/auth_python/db_valid')
