@@ -56,8 +56,7 @@ xs bind-service python-ml.python python-ml-hdi
 xs bind-service python-ml.python python-ml-uaa
 xs start python-ml.python
 
-git pull
-xs push python-ml.python -k 1024M -m 256M -n python -p python
+git pull ; xs push python-ml.python -k 1024M -m 256M -n python -p python
 ```
 
 Manually build the xsjs module
