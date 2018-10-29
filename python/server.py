@@ -225,7 +225,7 @@ def unauth_post():
         #
     else:
         #output = '{"yo":"mama"}'
-        output = content
+        output = json.dumps(content)
         
     # Return the results
     # return output
