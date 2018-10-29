@@ -166,7 +166,7 @@ def unauth_post():
     
     content = request.json
     
-    if False:	
+    if 1>2:	
         svcs_json = str(os.getenv("VCAP_SERVICES", 0))
         svcs = json.loads(svcs_json)
         
