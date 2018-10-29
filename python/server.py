@@ -229,7 +229,7 @@ def unauth_post():
         
     # Return the results
     # return output
-    return Response(output, mimetype='application/json')
+    return Response(output, mimetype='application/json' , status=201,)
 
 # If there is a request for a python/test2, return Testing message and then check JWT and connect to the data service and retrieve some data
 @app.route('/auth_python/db_valid')
