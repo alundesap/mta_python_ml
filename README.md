@@ -93,3 +93,14 @@ xs start python-ml.web
 git pull ; xs push python-ml.web -k 1024M -m 256M -p web ; xs restart python-ml.web --wait-indefinitely
 ```
 
+```
+echo "Changing to running app directory." ; pyguid=$(xs app python-ml.python --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; echo $pyguid ; cd /hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app
+
+cp server.py ~/../HDB90/hxe_python_ml/mta_python_ml/python/
+
+echo "Changing to running app directory." ; pyguid=$(xs app python-ml.web --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; echo $pyguid ; cd /hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app
+
+cp index.html ~/../HDB90/hxe_python_ml/mta_python_ml/web/resources/
+
+```
+

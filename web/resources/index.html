@@ -266,6 +266,7 @@ function prepareSimpleCanvas()
 		// The color/alpha information is held in an array, and is stored in the data property of the ImageData object.
 
 		// Looks like we can just take every 4th byte and call that it.
+
 /*
 def trainSQLinsert(nidx):
     sql = ""
@@ -282,17 +283,43 @@ def trainSQLinsert(nidx):
     return(sql)
 */
 
+		Number.prototype.pad = function(size) {
+				  var s = String(this);
+				    while (s.length < (size || 2)) {s = "0" + s;}
+					  return s;
+		}
+
 		request_obj = 
 		{
-		   "numberTarget": 1,
-		   "numberData": [
-			   	1,
-			   	randomIntFromInterval(0,255),
-			   	randomIntFromInterval(0,255),
-			   	1
-		   	]
-		};
+		   "numberTarget": 2,
+		   "numberData": []
+	   	};
 		
+		var idx;
+		var num;
+		var numtxt = "";
+
+		for (idx = 0; idx < imgData.data.length; idx += 4) {
+			num = imgData.data[idx+3];
+			request_obj.numberData.push(num);
+
+			if (num > 0) {
+				numtxt += num.pad(3);
+			}
+			else {
+				numtxt += "...";
+			}
+
+			if ((idx + 4) % (28 * 4)) {
+				numtxt += "";
+			}
+			else {
+				numtxt += "\n";
+			}
+		}
+
+		document.getElementById("imagetext").innerHTML = "<pre>\n" + "NumberText" + "\n" + numtxt + "</pre>\n";
+
 		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
 
 		xhr = new XMLHttpRequest();
@@ -415,6 +442,8 @@ function redrawSimple()
 		<div id="canvasScaledDiv"></div>
     </div>
 
+		<div id="imagetext"></div>
+
 <p>===Begin Request===</p>
 <div id="request_content">
 No request sent yet.    
@@ -433,6 +462,7 @@ document.getElementById("request_content").innerHTML = "<pre>\n" + request_outpu
 // Send the Ajax Request.
 //xhr.send(JSON.stringify(request_obj));
 </script>
+
 
 </body>
 </html>

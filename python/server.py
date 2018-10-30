@@ -48,7 +48,7 @@ hana = env.get_service(label='hana')
 # Requests passed through the app-router will never hit this route.
 @app.route('/')
 def hello_world():
-    output = '<strong>Hello World! I am instance ' + str(os.getenv("CF_INSTANCE_INDEX", 0)) + '</strong> Try these links.</br>\n'
+    output = '<strong>Hallo World! I am instance ' + str(os.getenv("CF_INSTANCE_INDEX", 0)) + '</strong> Try these links.</br>\n'
     output += '<a href="/python/test">/python/test</a><br />\n'
     output += '<a href="/python/env">/python/env</a><br />\n'
     output += '<a href="/python/db_only">/python/db_only</a><br />\n'
@@ -163,30 +163,30 @@ def unauth_post():
     output += '\n'
     output += 'Receiving module should check that it came from our approuter and verify or abort if otherwise.\n'
     output += '\n'
-    
+
     content = request.json
-    
-    if 1>2:	
+
+    if True:
         svcs_json = str(os.getenv("VCAP_SERVICES", 0))
         svcs = json.loads(svcs_json)
-        
+
         schema = hana.credentials['schema']
         host = hana.credentials['host']
         port = hana.credentials['port']
         user = hana.credentials['user']
         password = hana.credentials['password']
-        
+
         # The certificate will available for HANA service instances that require an encrypted connection
         # Note: This was tested to work with python hdbcli-2.3.112 tar.gz package not hdbcli-2.3.14 provided in XS_PYTHON00_0-70003433.ZIP  
         if 'certificate' in hana.credentials:
             haascert = hana.credentials['certificate']
-        
+
         output += 'schema: ' + schema + '\n'
         output += 'host: ' + host + '\n'
         output += 'port: ' + port + '\n'
         output += 'user: ' + user + '\n'
         output += 'pass: ' + password + '\n'
-        
+
         #    # Connect to the python HANA DB driver using the connection info
         # User for HANA as a Service instances
         if 'certificate' in hana.credentials:
@@ -203,16 +203,16 @@ def unauth_post():
             )
         else:
             connection = dbapi.connect(host,int(port),user,password)
-        
+
         #    # Prep a cursor for SQL execution
         cursor = connection.cursor()
-        
+
         #    # Form an SQL statement to retrieve some data
         if 'certificate' in hana.credentials:
             cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "DAT368.db.data::sensors.temp"')
         else:
             cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "' + schema + '"."DAT368.db.data::sensors.temp"')
-        
+
         #    # Execute the SQL and capture the result set
         sensor_vals = cursor.fetchall()
         #
@@ -226,7 +226,7 @@ def unauth_post():
     else:
         #output = '{"yo":"mama"}'
         output = json.dumps(content)
-        
+
     # Return the results
     # return output
     return Response(output, mimetype='application/json' , status=201,)
