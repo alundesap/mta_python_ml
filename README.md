@@ -19,6 +19,14 @@ pip download -d vendor -r requirements.txt --find-links ../../sap_dependencies -
 ../../mta_schemaless/tools/minion/minion -unead -t xsa
 ```
 
+Start/Stop WebIDE
+
+```
+xs t -o HANAExpress -t SAP
+xs start devx-ui5 ; xs start tools ; xs start webide
+xs stop webide ; xs stop tools ; xs stop devx-ui5
+```
+
 Currently using these steps.
 
 ```
