@@ -196,6 +196,96 @@ var context_scaled;
 /**
 * Creates a canvas element.
 */
+function prepareAndSend(whatnum)
+{
+		clickX_simple = new Array();
+		clickY_simple = new Array();
+		clickDrag_simple = new Array();
+
+		clearCanvas_scaled();
+		
+		context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
+		
+		var imgData = context_scaled.getImageData(0, 0, scaledWidth, scaledHeight);
+		// Need to stuff imgData into HANA!
+		// Probably via a POST to the Python Module.
+		
+		// imgData.data is 784 x 4 bytes.
+		// Need to convert the 4 bytes to an small int 0-255
+		
+		// For every pixel in an ImageData object there are four pieces of information, the RGBA values:
+
+		// R - The color red (from 0-255)
+		// G - The color green (from 0-255)
+		// B - The color blue (from 0-255)
+		// A - The alpha channel (from 0-255; 0 is transparent and 255 is fully visible)
+		
+		// The color/alpha information is held in an array, and is stored in the data property of the ImageData object.
+
+		// Looks like we can just take every 4th byte and call that it.
+
+		Number.prototype.pad = function(size) {
+				  var s = String(this);
+				    while (s.length < (size || 2)) {s = "0" + s;}
+					  return s;
+		}
+
+		request_obj = 
+		{
+		   "numberTarget": whatnum,
+		   "numberData": []
+	   	};
+		
+		var idx;
+		var num;
+		var numtxt = "";
+
+		for (idx = 0; idx < imgData.data.length; idx += 4) {
+			num = imgData.data[idx+3];
+			request_obj.numberData.push(num);
+
+			if (num > 0) {
+				numtxt += num.pad(3);
+			}
+			else {
+				numtxt += "...";
+			}
+
+			if ((idx + 4) % (28 * 4)) {
+				numtxt += "";
+			}
+			else {
+				numtxt += "\n";
+			}
+		}
+
+		document.getElementById("imagetext").innerHTML = "<pre>\n" + "NumberText" + "\n" + numtxt + "</pre>\n";
+
+		// document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
+		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + "suppressed..." + "</pre>\n";
+
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', 'python/post');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Accept', 'application/json');
+
+		xhr.onload = function() {
+		    if (xhr.status === 201) {
+		        document.getElementById("response_content").innerHTML = "<pre>\n" + dumpResponseHeaders(xhr) + "Response Body: \n" + JSON.stringify(JSON.parse(xhr.responseText), null, 2) + "</pre>\n";
+		    }
+		    else {
+		        alert("Yipe!  Got status " + xhr.status + " : " + xhr.statusText + " ::\n " + JSON.parse(xhr.responseText).error.message.value + " \n:: expected 201.");
+		    }
+		};
+
+		xhr.send(JSON.stringify(request_obj));
+
+		//xhr.close();
+		
+		clearCanvas_simple();
+	
+}
+
 function prepareSimpleCanvas()
 {
 	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
@@ -239,6 +329,26 @@ function prepareSimpleCanvas()
 		paint_simple = false;
 	});
 	
+	$('#send0').mousedown(function(e) { prepareAndSend("0") });
+
+	$('#send1').mousedown(function(e) { prepareAndSend("1") });
+
+	$('#send2').mousedown(function(e) { prepareAndSend("2") });
+
+	$('#send3').mousedown(function(e) { prepareAndSend("3") });
+
+	$('#send4').mousedown(function(e) { prepareAndSend("4") });
+
+	$('#send5').mousedown(function(e) { prepareAndSend("5") });
+
+	$('#send6').mousedown(function(e) { prepareAndSend("6") });
+
+	$('#send7').mousedown(function(e) { prepareAndSend("7") });
+
+	$('#send8').mousedown(function(e) { prepareAndSend("8") });
+
+	$('#send9').mousedown(function(e) { prepareAndSend("9") });
+
 	$('#clearCanvasSimple').mousedown(function(e)
 	{
 		clickX_simple = new Array();
@@ -320,7 +430,8 @@ def trainSQLinsert(nidx):
 
 		document.getElementById("imagetext").innerHTML = "<pre>\n" + "NumberText" + "\n" + numtxt + "</pre>\n";
 
-		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
+		// document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
+		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + "suppressed..." + "</pre>\n";
 
 		xhr = new XMLHttpRequest();
 		xhr.open('POST', 'python/post');
@@ -434,15 +545,28 @@ function redrawSimple()
 
 
     <p class="demoToolList">Clear the canvas: <button id="clearCanvasSimple" type="button">Clear</button></p>
-	<div class="image">
-		<div id="canvasSimpleDiv"></div>
+    <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
+	<div id="canvasSimpleDiv"></div>
     </div>
-    <br />
-	<div class="image">
-		<div id="canvasScaledDiv"></div>
+    <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
+	    <button id="send0" type="button">0</button><br />
+	    <button id="send1" type="button">1</button><br />
+	    <button id="send2" type="button">2</button><br />
+	    <button id="send3" type="button">3</button><br />
+	    <button id="send4" type="button">4</button><br />
+	    <button id="send5" type="button">5</button><br />
+	    <button id="send6" type="button">6</button><br />
+	    <button id="send7" type="button">7</button><br />
+	    <button id="send8" type="button">8</button><br />
+	    <button id="send9" type="button">9</button><br />
+    </div>
+    <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
+	<div id="canvasScaledDiv"></div>
     </div>
 
-		<div id="imagetext"></div>
+    <br />
+
+	<div id="imagetext"></div>
 
 <p>===Begin Request===</p>
 <div id="request_content">

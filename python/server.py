@@ -207,24 +207,37 @@ def unauth_post():
         #    # Prep a cursor for SQL execution
         cursor = connection.cursor()
 
-        #    # Form an SQL statement to retrieve some data
-        if 'certificate' in hana.credentials:
-            cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "DAT368.db.data::sensors.temp"')
-        else:
-            cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "' + schema + '"."DAT368.db.data::sensors.temp"')
+        sql = ""
 
-        #    # Execute the SQL and capture the result set
-        sensor_vals = cursor.fetchall()
+        if 'certificate' in hana.credentials:
+            sql += 'INSERT INTO "mta_python_ml.db.data::mnist.train" VALUES('
+        else:
+            sql += 'INSERT INTO "' + schema + '"."mta_python_ml.db.data::mnist.train" VALUES('
+        sql += str(content["numberTarget"]) + ","
+        for idx,val in enumerate(content["numberData"]):
+            if idx < (len(content["numberData"])-1):
+                sql += str(val) + ","
+            else:
+                sql += str(val) + ""
+        sql += ")"
+
+        cursor.execute(sql)
+
+        # Execute the SQL and capture the result set
+        #ret_vals = cursor.fetchall()
         #
-        #    # Loop through the result set and output
-        for sensor_val in sensor_vals:
-            output += 'sensor_val: ' + str(sensor_val[1]) + ' at: ' + str(sensor_val[2]) + '\n'
+        # Loop through the result set and output
+        #for ret_val in ret_vals:
+        #    output += 'ret_val: ' + str(ret_val[1]) + '\n'
         #
         #    # Close the DB connection
         connection.close()
         #
+        #output = {"sql":sql}
+        output = json.dumps({"sql":sql})
+        #output = json.dumps(content)
     else:
-        #output = '{"yo":"mama"}'
+        content = {"content":content["numberTarget"]}
         output = json.dumps(content)
 
     # Return the results
