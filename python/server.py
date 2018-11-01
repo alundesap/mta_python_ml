@@ -1,6 +1,6 @@
 """
 XSA Python buildpack app example
-Author: Andrew Lunde
+Author: Andrew Lunde 
 """
 import sys
 print(sys.path)

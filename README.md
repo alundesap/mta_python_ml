@@ -99,10 +99,17 @@ echo "Changing to running app directory." ; pyguid=$(xs app python-ml.python --g
 echo "Saving server.py to project." ; cp server.py ~/../HDB90/hxe_python_ml/mta_python_ml/python/
 echo "Loading server.py from project." ; cp ~/../HDB90/hxe_python_ml/mta_python_ml/python/server.py .
 
+Watch python
+pyguid=$(xs app python-ml.python --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; pydir=$(echo "/hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app") ; ./xsa_exec_watch.sh $pydir python
+
+
 echo "Changing to running app directory." ; pyguid=$(xs app python-ml.web --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; echo $pyguid ; cd /hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app
 
 echo "Saving index.html to project." ; cp index.html ~/../HDB90/hxe_python_ml/mta_python_ml/web/resources/
 echo "Loading index.html from project." ; cp ~/../HDB90/hxe_python_ml/mta_python_ml/web/resources/index.html .
+
+Watch web
+webguid=$(xs app python-ml.web --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; webdir=$(echo "/hana/shared/HXE/xs/app_working/hxehost/executionroot/$webguid/app/resources") ; ./xsa_exec_watch.sh $webdir web/resources
 
 ```
 
