@@ -31,6 +31,8 @@ import hana_ml
 from hana_ml import dataframe
 from hana_ml.algorithms import classification
 
+import time
+
 app = Flask(__name__)
 env = AppEnv()
 
@@ -207,21 +209,112 @@ def unauth_post():
         #    # Prep a cursor for SQL execution
         cursor = connection.cursor()
 
-        sql = ""
+        if 'action' in content:
+            # See if it's an action to perform...
 
-        if 'certificate' in hana.credentials:
-            sql += 'INSERT INTO "mta_python_ml.db.data::mnist.train" VALUES('
-        else:
-            sql += 'INSERT INTO "' + schema + '"."mta_python_ml.db.data::mnist.train" VALUES('
-        sql += str(content["numberTarget"]) + ","
-        for idx,val in enumerate(content["numberData"]):
-            if idx < (len(content["numberData"])-1):
-                sql += str(val) + ","
+            if content["action"] == "clearTraining":
+
+                if 'certificate' in hana.credentials:
+                    exresult = cursor.execute('DELETE FROM "mta_python_ml.db.data::mnist.train"')
+                else:
+                    exresult = cursor.execute('DELETE FROM "' + schema + '"."mta_python_ml.db.data::mnist.train"')
+
+                content["result"] = "Result is: " + str(exresult)
             else:
-                sql += str(val) + ""
-        sql += ")"
+                content["result"] = "Unknown action: " + content["action"]
 
-        cursor.execute(sql)
+            response = content
+
+
+        else:
+            # Clear the test data table
+
+            if 'certificate' in hana.credentials:
+                cursor.execute('DELETE FROM "mta_python_ml.db.data::mnist.test"')
+            else:
+                cursor.execute('DELETE FROM "' + schema + '"."mta_python_ml.db.data::mnist.test"')
+
+            # Put incoming number image data and target into the test data table.
+
+            sql = ""
+
+            if 'certificate' in hana.credentials:
+                sql += 'INSERT INTO "mta_python_ml.db.data::mnist.test" VALUES('
+            else:
+                sql += 'INSERT INTO "' + schema + '"."mta_python_ml.db.data::mnist.test" VALUES('
+
+            sql += str(content["numberTarget"]) + ","
+            for idx,val in enumerate(content["numberData"]):
+                if idx < (len(content["numberData"])-1):
+                    sql += str(val) + ","
+                else:
+                    sql += str(val) + ""
+            sql += ")"
+
+            cursor.execute(sql)
+
+            response = {
+                "response": "Response Object"
+            }
+
+            # See if there is any training data
+
+            # Fit
+
+            from hana_ml import dataframe
+            from hana_ml.algorithms import svm
+            connection_context = dataframe.ConnectionContext(host, int(port), user, password)
+
+            df_fit = connection_context.table("mta_python_ml.db.data::mnist.train", schema=schema)
+            num_training_images = len(df_fit)
+
+            response["num_training_images"] = num_training_images
+
+            if num_training_images < 10:
+                response["training_secs_msg"] = "Need at least " + str(10 - num_training_images) + " more images to train."
+
+            else:
+                svc = svm.SVC(connection_context, gamma=0.005)
+                start_time = time.time()
+                svc.fit(df_fit,label='LABEL',has_id=True)
+                training_secs_msg = ('Fitting of Training Data Time: {} seconds'.format(time.time() - start_time))
+
+                response["training_secs_msg"] = training_secs_msg
+
+                # Predict
+
+                df_predict = connection_context.table("mta_python_ml.db.data::mnist.test", schema=schema).drop(['LABEL'])
+
+                start_time = time.time()
+                predicted_df = svc.predict(df_predict)
+                predict_secs_msg = ('Predicting of Test Data Time: {} seconds'.format(time.time() - start_time))
+
+                response["predict_secs_msg"] = predict_secs_msg
+
+                pdf_predicted = predicted_df.select(['ID','SCORE']).collect()
+
+                for index, row in pdf_predicted.iterrows():
+                    predict_target = row["SCORE"]
+
+                response["predict_target"] = predict_target
+
+            # Put incoming number image data and target into the training data
+            # table. (for next time)
+            sql = ""
+
+            if 'certificate' in hana.credentials:
+                sql += 'INSERT INTO "mta_python_ml.db.data::mnist.train" VALUES('
+            else:
+                sql += 'INSERT INTO "' + schema + '"."mta_python_ml.db.data::mnist.train" VALUES('
+            sql += str(content["numberTarget"]) + ","
+            for idx,val in enumerate(content["numberData"]):
+                if idx < (len(content["numberData"])-1):
+                    sql += str(val) + ","
+                else:
+                    sql += str(val) + ""
+            sql += ")"
+
+            cursor.execute(sql)
 
         # Execute the SQL and capture the result set
         #ret_vals = cursor.fetchall()
@@ -234,8 +327,9 @@ def unauth_post():
         connection.close()
         #
         #output = {"sql":sql}
-        output = json.dumps({"sql":sql})
+        #output = json.dumps({"sql":sql})
         #output = json.dumps(content)
+        output = json.dumps(response)
     else:
         content = {"content":content["numberTarget"]}
         output = json.dumps(content)

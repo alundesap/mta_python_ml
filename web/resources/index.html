@@ -196,6 +196,42 @@ var context_scaled;
 /**
 * Creates a canvas element.
 */
+
+function sendClearTraining()
+{
+
+		clearCanvas_scaled();
+		clearCanvas_simple();
+
+		request_obj = 
+		{
+		   "action": "clearTraining"
+	   	};
+	
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', 'python/post');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Accept', 'application/json');
+
+		xhr.onload = function() {
+		    if (xhr.status === 201) {
+		        document.getElementById("response_content").innerHTML = "<pre>\n" + dumpResponseHeaders(xhr) + "Response Body: \n" + JSON.stringify(JSON.parse(xhr.responseText), null, 2) + "</pre>\n";
+
+		        document.getElementById("numTrainingImages").innerHTML = "00";
+		        document.getElementById("training_secs_msg").innerHTML = "Training images have been cleared.";
+		        document.getElementById("predict_secs_msg").innerHTML = "";
+		        document.getElementById("predict_target").innerHTML = "X";
+
+		    }
+		    else {
+		        alert("Yipe!  Got status " + xhr.status + " : " + xhr.statusText + " ::\n " + JSON.parse(xhr.responseText).error.message.value + " \n:: expected 201.");
+		    }
+		};
+
+		xhr.send(JSON.stringify(request_obj));
+
+}
+
 function prepareAndSend(whatnum)
 {
 		clickX_simple = new Array();
@@ -272,6 +308,16 @@ function prepareAndSend(whatnum)
 		xhr.onload = function() {
 		    if (xhr.status === 201) {
 		        document.getElementById("response_content").innerHTML = "<pre>\n" + dumpResponseHeaders(xhr) + "Response Body: \n" + JSON.stringify(JSON.parse(xhr.responseText), null, 2) + "</pre>\n";
+
+			responseJSON = JSON.parse(xhr.responseText);
+		        document.getElementById("numTrainingImages").innerHTML = responseJSON.num_training_images;
+		        document.getElementById("training_secs_msg").innerHTML = responseJSON.training_secs_msg;
+			if (typeof(responseJSON.predict_secs_msg) != "undefined") {
+		        	document.getElementById("predict_secs_msg").innerHTML = responseJSON.predict_secs_msg;
+			}
+			if (typeof(responseJSON.predict_target) != "undefined") {
+		        	document.getElementById("predict_target").innerHTML = responseJSON.predict_target;
+			}
 		    }
 		    else {
 		        alert("Yipe!  Got status " + xhr.status + " : " + xhr.statusText + " ::\n " + JSON.parse(xhr.responseText).error.message.value + " \n:: expected 201.");
@@ -348,6 +394,8 @@ function prepareSimpleCanvas()
 	$('#send8').mousedown(function(e) { prepareAndSend("8") });
 
 	$('#send9').mousedown(function(e) { prepareAndSend("9") });
+
+	$('#clearTraining').mousedown(function(e) { sendClearTraining() });
 
 	$('#clearCanvasSimple').mousedown(function(e)
 	{
@@ -562,6 +610,15 @@ function redrawSimple()
     </div>
     <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
 	<div id="canvasScaledDiv"></div>
+    </div>
+
+    <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
+	    <span id="numTrainingImages">XX</span> Training Images<br />
+	    <span id="training_secs_msg">Fitting Time</span><br />
+	    <span id="predict_secs_msg">Predict Time</span><br />
+	    Number Predicted as <span id="predict_target">X</span><br />
+	    <br />
+	    <button id="clearTraining" type="button">Clear Training</button><br />
     </div>
 
     <br />
