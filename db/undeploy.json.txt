@@ -1,3 +1,4 @@
 [
 "src/data/digits.hdbcds"
+"src/data/sensors.hdbcds"
 ]

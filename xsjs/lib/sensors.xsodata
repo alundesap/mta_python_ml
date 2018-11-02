@@ -1,7 +1,0 @@
-service {
-	"mta_python_ml.db.data::sensors.temp" as "temp" 
-		create using "inc:tempCreate.xsjslib::tempCreate"
-	;
-	"mta_python_ml.db.data::sensors.tempNoTimestamp" as "tempNoTS" keys generate local "ID"
-	;
-}

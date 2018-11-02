@@ -1,7 +1,0 @@
-service {
-	"mta_python_ml.db.data::diabetes.subject" as "subject" 
-								create forbidden 
-								update forbidden
-								delete forbidden
-	;
-}
