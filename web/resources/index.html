@@ -124,14 +124,19 @@ var request_obj =
 
 </head>
 <body style="font-family: Tahoma, Geneva, sans-serif">
-<strong>MTA Python ML Libs</strong><br />
+<strong>Multi-Target Application Demonstrating the Python API for Machine Learing Libraries</strong><br />
+<strong>This demo is using the Support Vector Machine : Support Vector Classifier</strong><br />
 <br />
+<p>Using your mouse, draw a digit 0-9 in the left box and then click the button 0-9</p>
+<p>Click the <button id="clearTraining" type="button">Clear Training</button> button to start over.</p>
+
+<!--
 <br />
 <a href="python/links">python/links</a> Provided by the Python module, Test Links.<br />
 <p>Authorization troubleshooting hint:</p><br />
 <p>Browse to this URL and inspect the authorities to confirm the user has the expected roles.</p>
 <p>api=$(xs api | grep endpoint | tr -s ' ' | cut -d ' ' -f 3) ; apiinfo=$(echo -n $api"/v2/info") ; echo $apiinfo ; uaa=$(curl -k -s $apiinfo | tr "," "\n" | grep authorizationEndpoint | cut -d '"' -f 4) ; cnfwho=$(echo -n $uaa"/config?action=who") ; echo $cnfwho</p>
-
+-->
 <script type="text/javascript">
 
 var canvas;
@@ -220,7 +225,7 @@ function sendClearTraining()
 		        document.getElementById("numTrainingImages").innerHTML = "00";
 		        document.getElementById("training_secs_msg").innerHTML = "Training images have been cleared.";
 		        document.getElementById("predict_secs_msg").innerHTML = "";
-		        document.getElementById("predict_target").innerHTML = "X";
+		        document.getElementById("predict_target").innerHTML = "?";
 
 		    }
 		    else {
@@ -240,6 +245,10 @@ function prepareAndSend(whatnum)
 
 		clearCanvas_scaled();
 		
+		document.getElementById("training_secs_msg").innerHTML = "Fitting of Training Data Time: 0.0000000000000000 seconds";
+	      	document.getElementById("predict_secs_msg").innerHTML = "Predicting of Test Data Time: 0.0000000000000000 seconds";
+        	document.getElementById("predict_target").innerHTML = "?";
+
 		context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
 		
 		var imgData = context_scaled.getImageData(0, 0, scaledWidth, scaledHeight);
@@ -405,102 +414,11 @@ function prepareSimpleCanvas()
 
 		clearCanvas_scaled();
 		
-		context_scaled.drawImage(canvas_simple, 0, 0, scaledWidth, scaledHeight);
-		
-		var imgData = context_scaled.getImageData(0, 0, scaledWidth, scaledHeight);
-		// Need to stuff imgData into HANA!
-		// Probably via a POST to the Python Module.
-		
-		// imgData.data is 784 x 4 bytes.
-		// Need to convert the 4 bytes to an small int 0-255
-		
-		// For every pixel in an ImageData object there are four pieces of information, the RGBA values:
-
-		// R - The color red (from 0-255)
-		// G - The color green (from 0-255)
-		// B - The color blue (from 0-255)
-		// A - The alpha channel (from 0-255; 0 is transparent and 255 is fully visible)
-		
-		// The color/alpha information is held in an array, and is stored in the data property of the ImageData object.
-
-		// Looks like we can just take every 4th byte and call that it.
-
-/*
-def trainSQLinsert(nidx):
-    sql = ""
-    sql += 'INSERT INTO "mta_python_ml.db.data::mnist.train" VALUES('
-    sql += str(labels[nidx]) + ","
-    idx = 0;
-    for x in images[nidx]:
-        if idx < (784 - 1):
-            sql += str(x) + ","
-        else:
-            sql += str(x)
-        idx += 1
-    sql += ')'
-    return(sql)
-*/
-
-		Number.prototype.pad = function(size) {
-				  var s = String(this);
-				    while (s.length < (size || 2)) {s = "0" + s;}
-					  return s;
-		}
-
-		request_obj = 
-		{
-		   "numberTarget": 2,
-		   "numberData": []
-	   	};
-		
-		var idx;
-		var num;
-		var numtxt = "";
-
-		for (idx = 0; idx < imgData.data.length; idx += 4) {
-			num = imgData.data[idx+3];
-			request_obj.numberData.push(num);
-
-			if (num > 0) {
-				numtxt += num.pad(3);
-			}
-			else {
-				numtxt += "...";
-			}
-
-			if ((idx + 4) % (28 * 4)) {
-				numtxt += "";
-			}
-			else {
-				numtxt += "\n";
-			}
-		}
-
-		document.getElementById("imagetext").innerHTML = "<pre>\n" + "NumberText" + "\n" + numtxt + "</pre>\n";
-
-		// document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + JSON.stringify(request_obj, null, 2) + "</pre>\n";
-		document.getElementById("request_content").innerHTML = "<pre>\n" + request_output + "\n" + "suppressed..." + "</pre>\n";
-
-		xhr = new XMLHttpRequest();
-		xhr.open('POST', 'python/post');
-		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.setRequestHeader('Accept', 'application/json');
-
-		xhr.onload = function() {
-		    if (xhr.status === 201) {
-		        document.getElementById("response_content").innerHTML = "<pre>\n" + dumpResponseHeaders(xhr) + "Response Body: \n" + JSON.stringify(JSON.parse(xhr.responseText), null, 2) + "</pre>\n";
-		    }
-		    else {
-		        alert("Yipe!  Got status " + xhr.status + " : " + xhr.statusText + " ::\n " + JSON.parse(xhr.responseText).error.message.value + " \n:: expected 201.");
-		    }
-		};
-
-		xhr.send(JSON.stringify(request_obj));
-
-		//xhr.close();
-		
 		clearCanvas_simple();
-		
+
+		document.getElementById("training_secs_msg").innerHTML = "";
+	      	document.getElementById("predict_secs_msg").innerHTML = "";
+        	document.getElementById("predict_target").innerHTML = "?";
 	});
 	
 	// Add touch event listeners to canvas element
@@ -613,10 +531,10 @@ function redrawSimple()
     </div>
 
     <div class="image" style="display: inline-block; vertical-align: middle; line-height: normal;">
-	    <span id="numTrainingImages">XX</span> Training Images<br />
-	    <span id="training_secs_msg">Fitting Time</span><br />
-	    <span id="predict_secs_msg">Predict Time</span><br />
-	    Number Predicted as <span id="predict_target">X</span><br />
+	    <span id="numTrainingImages">??</span> Training Images<br />
+	    <span id="training_secs_msg">Fitting of Training Data Time:</span><br />
+	    <span id="predict_secs_msg">Predicting of Test Data Time:</span><br />
+	    Number Predicted as <span id="predict_target" style=" font-size: 2em; border: solid 2px; text-align: center; width: 1em; display: inline-block; ">?</span><br />
 	    <br />
 	    <button id="clearTraining" type="button">Clear Training</button><br />
     </div>
