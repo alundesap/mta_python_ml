@@ -182,6 +182,8 @@ def unauth_post():
         # Note: This was tested to work with python hdbcli-2.3.112 tar.gz package not hdbcli-2.3.14 provided in XS_PYTHON00_0-70003433.ZIP  
         if 'certificate' in hana.credentials:
             haascert = hana.credentials['certificate']
+            if haascert is None:
+                del hana.credentials['certificate']
 
         output += 'schema: ' + schema + '\n'
         output += 'host: ' + host + '\n'
