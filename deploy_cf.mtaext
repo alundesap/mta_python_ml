@@ -5,17 +5,17 @@ _schema-version: '3.1'
 modules:
   - name: web
     parameters:
-      memory: 128MB
+      memory: 1024MB
       disk: 256M
-      host: shared.dat368-web
+      host: python-ml-web
     properties:
       TENANT_HOST_PATTERN: '^(.*).dat368-(.*).cfapps.(.*).hana.ondemand.com'
 
-  - name: xsjs
+  - name: python
     parameters:
-      memory: 128MB
+      memory: 1024MB
       disk: 256M
-      host: dat368-xsjs
+      host: python-ml-python
 
 resources:
  - name: dat368-hdi

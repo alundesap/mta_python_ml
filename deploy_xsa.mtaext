@@ -3,24 +3,24 @@ extends: python-ml
 _schema-version: '3.1'
 
 modules:
+
+  - name: db
+    parameters:
+      memory: 1024MB
+      disk: 256M
+
   - name: web
     parameters:
-      memory: 96MB
+      memory: 1024MB
       disk: 256M
-      host: dat368-web
-
-  - name: xsjs
-    parameters:
-      memory: 96MB
-      disk: 256M
-      host: dat368-xsjs
+      host: python-ml-web
 
 ### Python Module Block Begin vvv
-#  - name: python
-#    parameters:
-#      memory: 96MB
-#      disk: 256M
-#      host: dat368-python
+  - name: python
+    parameters:
+      memory: 1024MB
+      disk: 256M
+      host: python-ml-python
 ### Python Module Block End ^^^
 
 #resources:
