@@ -43,6 +43,3 @@ resources:
       hdi-container-name: ${service-name}
  - name: python-ml-uaa
    type: com.sap.xs.uaa
-   parameters:
-      path: ./xs-security.json
-
