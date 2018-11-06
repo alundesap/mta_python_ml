@@ -5,3 +5,5 @@ python/NaNmnist/
 python/mnist_data/
 web/Simple-HTML5-Drawing-App/
 node_modules/
+target/
+.mta/
