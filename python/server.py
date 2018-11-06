@@ -265,8 +265,11 @@ def unauth_post():
 
             from hana_ml import dataframe
             from hana_ml.algorithms import svm
-            #connection_context = dataframe.ConnectionContext(host, int(port), user, password)
-            connection_context = dataframe.ConnectionContext(address=host, port=int(port), user=user, password=password, currentSchema=schema, encrypt="true", sslValidateCertificate="true", sslCryptoProvider="openssl", sslTrustStore=haascert)
+            
+            if 'certificate' in hana.credentials:
+                connection_context = dataframe.ConnectionContext(address=host, port=int(port), user=user, password=password, currentSchema=schema, encrypt="true", sslValidateCertificate="true", sslCryptoProvider="openssl", sslTrustStore=haascert)
+            else:
+                connection_context = dataframe.ConnectionContext(host, int(port), user, password)
 
             df_fit = connection_context.table("mta_python_ml.db.data::mnist.train", schema=schema)
             num_training_images = len(df_fit)
