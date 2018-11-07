@@ -79,17 +79,41 @@ xs start python-ml.web
 
 git pull ; xs push python-ml.web -k 1024M -m 256M -p web ; xs restart python-ml.web --wait-indefinitely
 ```
+The following commands are super useful in doing active development on XSA.
+
+First, understand that when you push or deploy your module, it's getting stuffed into the blobstore and then copied out of the blobstore into a "container" using process separation.  To find and change into the folder your module is running in, use this command.
 
 ```
 echo "Changing to running app directory." ; pyguid=$(xs app python-ml.python --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; echo $pyguid ; cd /hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app
+```
+Now you can edit your files and save them here to test different but you have to be careful since as noted above, these files are copied out of the blobstore.  If you end up crashing the process for creating a syntax error, the current instance of your module will be abandoned and the system will create a new one.  Just run the command above again and you'll get into the latest directory of your running module.  Note also that this may not work as expected if you request multiple instances of your module.  If your module crashes, you'll loose all the changes you've made since the last push/deploy operation.  To get around this, you can copy your files back to the place where you built them like so.
 
+```
 echo "Saving server.py to project." ; cp server.py ~/../HDB90/hxe_python_ml/mta_python_ml/python/
 echo "Loading server.py from project." ; cp ~/../HDB90/hxe_python_ml/mta_python_ml/python/server.py .
+```
+However, this is a bit painful since you have to remember to do this BEFORE you make a mistake.
 
-Watch python
+A better approach is to work from your project dirctory and then copy your changed files into the active directory.  If your python module is in debugging mode, it will pick up that the file has changed and will automatically reload itself.
+
+Even better is to set up a script to watch your project files and copy them into the active directory whenever you save them.
+
+This is exactly what the following script does.  It also frees you from having to worry about forgetting to copy the changed files.
+
+Perform this from the main project folder.
+
+Watch python files.
+```
+cd /usr/sap/HXE/HDB90/hxe_python_ml/mta_python_ml
 pyguid=$(xs app python-ml.python --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; pydir=$(echo "/hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app") ; ./xsa_exec_watch.sh python $pydir
+```
+Now leave that console window running and go edit your files in another console window.
+```
+vi python/server.py
+```
+Same thing works for your web module.
 
-
+```
 echo "Changing to running app directory." ; pyguid=$(xs app python-ml.web --guids | grep RUNNING | tr -s " " | cut -d " " -f 12) ; echo $pyguid ; cd /hana/shared/HXE/xs/app_working/hxehost/executionroot/$pyguid/app
 
 echo "Saving index.html to project." ; cp index.html ~/../HDB90/hxe_python_ml/mta_python_ml/web/resources/
