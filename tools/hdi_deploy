@@ -1,0 +1,17 @@
+#!/bin/bash
+echo ""
+echo HDI Deploy Starting
+echo ""
+pwd
+set | grep PATH
+npm config set @sap:registry "https://npm.sap.com/" ; npm config set registry "https://registry.npmjs.org/" ; npm config set strict-ssl true
+xs t -s DEV
+xs push python-ml.db -k 1024M -m 256M -p db --no-start --no-route
+xs bind-service python-ml.db python-ml-hdi
+xs restart python-ml.db --wait-indefinitely ; sleep 15 ; xs stop python-ml.db
+#xs env python-ml.db --export-json /dev/stdout 2>/dev/null | tail -n +5 | jq -r '.VCAP_SERVICES'
+HDI_SCHEMA=$(xs env python-ml.db --export-json /dev/stdout 2>/dev/null | tail -n +5 | jq -r '.VCAP_SERVICES.hana[0].credentials.schema') ; echo "SCHEMA="$HDI_SCHEMA
+HDI_USER=$(xs env python-ml.db --export-json /dev/stdout 2>/dev/null | tail -n +5 | jq -r '.VCAP_SERVICES.hana[0].credentials.user') ; echo "USER="$HDI_USER
+HDI_PASS=$(xs env python-ml.db --export-json /dev/stdout 2>/dev/null | tail -n +5 | jq -r '.VCAP_SERVICES.hana[0].credentials.password') ; echo "PASS="$HDI_PASS
+echo ""
+echo HDI Deploy Finished

@@ -141,16 +141,21 @@ def unauth_db_only():
 
 #    # Form an SQL statement to retrieve some data
     if 'certificate' in hana.credentials:
-        cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "DAT368.db.data::sensors.temp"')
+        cursor.execute('SELECT "ID","ATTRIBUTE1","ATTRIBUTE2","ATTRIBUTE3","ATTRIBUTE4","LABEL" FROM "' + '' + '"."mta_python_ml.db.data::mnist.extrain"')
     else:
-        cursor.execute('SELECT "tempId", "tempVal", "ts", "created" FROM "' + schema + '"."DAT368.db.data::sensors.temp"')
+        cursor.execute('SELECT "ID","ATTRIBUTE1","ATTRIBUTE2","ATTRIBUTE3","ATTRIBUTE4","LABEL" FROM "' + schema + '"."mta_python_ml.db.data::mnist.extrain"')
 
 #    # Execute the SQL and capture the result set
-    sensor_vals = cursor.fetchall()
+    extrain_vals = cursor.fetchall()
 #
 #    # Loop through the result set and output
-    for sensor_val in sensor_vals:
-        output += 'sensor_val: ' + str(sensor_val[1]) + ' at: ' + str(sensor_val[2]) + '\n'
+    for extrain_val in extrain_vals:
+        output += 'extrain[' + str(extrain_val[0]) + ']'
+        output += ' at1: ' + str(extrain_val[1])
+        output += ' at2: ' + str(extrain_val[2])
+        output += ' at3: ' + str(extrain_val[3])
+        output += ' at4: ' + str(extrain_val[4])
+        output += ' lab: ' + str(extrain_val[5]) + '\n'
 #
 #    # Close the DB connection
     connection.close()
