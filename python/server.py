@@ -45,6 +45,26 @@ env = AppEnv()
 port = int(os.getenv("PORT", 9099))
 hana = env.get_service(label='hana')
 
+def attach(port, host):
+    try:
+        import pydevd
+        pydevd.stoptrace() #I.e.: disconnect if already connected
+        # pydevd.DebugInfoHolder.DEBUG_RECORD_SOCKET_READS = True
+        # pydevd.DebugInfoHolder.DEBUG_TRACE_BREAKPOINTS = 3
+        # pydevd.DebugInfoHolder.DEBUG_TRACE_LEVEL = 3
+        pydevd.settrace(
+            port=port,
+            host=host,
+            stdoutToServer=True,
+            stderrToServer=True,
+            overwrite_prev_trace=True,
+            suspend=False,
+            trace_only_current_thread=False,
+            patch_multiprocessing=False,
+        )
+    except:
+        import traceback;traceback.print_exc() 
+        
 # This module's Flask webserver will respond to these three routes (URL paths)
 # If there is no path then just return Hello World and this module's instance number
 # Requests passed through the app-router will never hit this route.

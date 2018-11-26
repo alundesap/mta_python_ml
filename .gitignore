@@ -7,3 +7,4 @@ web/Simple-HTML5-Drawing-App/
 node_modules/
 target/
 .mta/
+mtad.yaml

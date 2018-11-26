@@ -18,3 +18,4 @@ hdbcli
 #pip install -t local -f /tmp hdbcli
 #./local/hdbcli-2.3.14.tar.gz
 hana_ml
+pydevd
