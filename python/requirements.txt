@@ -1,6 +1,6 @@
 # Bring dependencies local with pip
 #mkdir vendor
-#export PYTHONUSERBASE=/usr/sap/HXE/HDB00/DAT368/python/vendor
+#export PYTHONUSERBASE=/home/user/projects/mta_python_ml/vendor
 #pip install --user -r requirements.txt
 #
 Flask
@@ -17,5 +17,5 @@ hdbcli
 #Use local from XS_PYTHON.zip unzipped into /tmp
 #pip install -t local -f /tmp hdbcli
 #./local/hdbcli-2.3.14.tar.gz
-hana_ml
+hana-ml
 pydevd

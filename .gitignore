@@ -8,3 +8,4 @@ node_modules/
 target/
 .mta/
 mtad.yaml
+package-lock.json
